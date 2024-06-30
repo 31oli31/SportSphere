@@ -6,7 +6,7 @@ import ButtonLink, { Button } from '@/components/Button';
 import { LoadingCircle } from "@/components/LoadingCircle";
 import { PAGE_ROUTE } from "@/interface/route";
 
-export const GET_TEAM_DETAILS = gql(`
+const GET_TEAM_DETAILS = gql(`
   query getTeamDetails($id: String!) {
     team(id: $id) {
       id
