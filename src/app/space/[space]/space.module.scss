@@ -1,0 +1,39 @@
+.cardBackground {
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+}
+
+.cardBackground::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top right, rgb(255, 255, 255) 50%, rgba(255, 255, 255, 0.427) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cardContent {
+    position: relative;
+    z-index: 1;
+}
+
+.cardTeams {
+    background-image: url('/assets/team.webp');
+}
+
+.cardPlayers {
+    background-image: url('/assets/player.webp');
+}
+
+.cardGames {
+    background-image: url('/assets/team2.webp');
+}
+
+.cardSports {
+    background-image: url('/assets/soccer.webp');
+}

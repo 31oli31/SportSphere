@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+//datasource db {
+//  provider = "mysql"
+//  url      = env("DATABASE_URL")
+//}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POST_DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(uuid()) @db.VarChar(36)
+  email             String?  @unique @db.VarChar(255)
+  password          String?  @db.VarChar(255)
+  ssoProvider       String?  @db.VarChar(50)
+  ssoProviderUserId String?  @db.VarChar(255)
+  createdAt         DateTime @default(now()) @db.DateTime(0)
+  updatedAt         DateTime @default(now()) @updatedAt @db.DateTime(0)
+  username          String   @unique @db.VarChar(36)
+  isGuest           Boolean  @default(false)
+  adminSpaces       Space[]
+  userSpaces        Space[]  @relation("SpaceUsers")
+
+  @@map("user")
+}
+
+model Space {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  name      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.DateTime(0)
+  updatedAt DateTime @default(now()) @updatedAt @db.DateTime(0)
+  adminId   String   @db.VarChar(36)
+  games     Game[]
+  players   Player[]
+  admin     User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  sports    Sport[]
+  teams     Team[]
+  users     User[]   @relation("SpaceUsers")
+
+  @@index([adminId], map: "space_adminId_fkey")
+  @@map("space")
+}
+
+model Sport {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  name      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.DateTime(0)
+  updatedAt DateTime @default(now()) @updatedAt @db.DateTime(0)
+  spaceId   String?  @db.VarChar(36)
+  games     Game[]
+  Space     Space?   @relation(fields: [spaceId], references: [id])
+
+  @@index([spaceId], map: "sport_spaceId_fkey")
+  @@map("sport")
+}
+
+model Team {
+  id          String       @id @default(uuid()) @db.VarChar(36)
+  name        String       @unique @db.VarChar(255)
+  spaceId     String       @db.VarChar(36)
+  sportId     String?      @db.VarChar(36)
+  createdAt   DateTime     @default(now()) @db.DateTime(0)
+  updatedAt   DateTime     @default(now()) @updatedAt @db.DateTime(0)
+  gamesAsA    Game[]       @relation("TeamA")
+  gamesAsB    Game[]       @relation("TeamB")
+  playerTeams PlayerTeam[]
+  space       Space        @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@index([spaceId])
+  @@index([sportId])
+  @@map("team")
+}
+
+model Player {
+  id          String       @id @default(uuid()) @db.VarChar(36)
+  name        String       @unique @db.VarChar(255)
+  createdAt   DateTime     @default(now()) @db.DateTime(0)
+  updatedAt   DateTime     @default(now()) @updatedAt @db.DateTime(0)
+  spaceId     String?      @db.VarChar(36)
+  Space       Space?       @relation(fields: [spaceId], references: [id])
+  playerTeams PlayerTeam[]
+
+  @@index([spaceId], map: "player_spaceId_fkey")
+  @@map("player")
+}
+
+model PlayerTeam {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  playerId  String   @db.VarChar(36)
+  teamId    String   @db.VarChar(36)
+  createdAt DateTime @default(now()) @db.DateTime(0)
+  updatedAt DateTime @default(now()) @updatedAt @db.DateTime(0)
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, teamId])
+  @@index([playerId, teamId])
+  @@index([playerId], map: "player_team_playerId_fkey")
+  @@index([teamId], map: "player_team_teamId_fkey")
+  @@map("player_team")
+}
+
+model Game {
+  gameDate   DateTime @default(now()) @db.DateTime(0)
+  id         String   @id @default(uuid()) @db.VarChar(36)
+  spaceId    String   @db.VarChar(36)
+  sportId    String   @db.VarChar(36)
+  teamAId    String   @db.VarChar(36)
+  teamAScore Int
+  teamBId    String   @db.VarChar(36)
+  teamBScore Int
+  createdAt  DateTime @default(now()) @db.DateTime(0)
+  updatedAt  DateTime @default(now()) @updatedAt @db.DateTime(0)
+  space      Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  sport      Sport    @relation(fields: [sportId], references: [id], onDelete: Cascade)
+  teamA      Team     @relation("TeamA", fields: [teamAId], references: [id], onDelete: Cascade)
+  teamB      Team     @relation("TeamB", fields: [teamBId], references: [id], onDelete: Cascade)
+
+  @@index([spaceId])
+  @@index([teamAId])
+  @@index([teamBId])
+  @@index([sportId])
+  @@map("game")
+}
