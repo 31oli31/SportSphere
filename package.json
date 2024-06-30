@@ -10,7 +10,7 @@
     "compile": "graphql-codegen",
     "watch": "graphql-codegen -w",
     "codegen": "graphql-codegen --config codegen.ts",
-        "postinstall": "prisma generate && graphql-codegen --config codegen.ts"
+    "postinstall": "prisma generate && graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
