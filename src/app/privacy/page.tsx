@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
 
             <section className="mb-8">
                 <h2 className="text-2xl font-semibold mb-2">1. Introduction</h2>
-                <p>Sportsphere ("we", "our", "us") is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by Sportsphere.</p>
+                <p>Sportsphere  is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by Sportsphere.</p>
             </section>
 
             <section className="mb-8">
