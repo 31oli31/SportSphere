@@ -39,6 +39,7 @@ const getInitials = (name: string) => {
 const ClientLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useData();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const path = usePathname();
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -47,6 +48,8 @@ const ClientLayout = ({ children }: { children: ReactNode }) => {
   const closeDropdown = () => {
     setDropdownOpen(false);
   };
+
+  const isLandingPage = path === PAGE_ROUTE.HOME;
 
   return (
     <div className="min-h-screen w-screen bg-gray-50 text-gray-800 flex flex-col ">
@@ -60,7 +63,7 @@ const ClientLayout = ({ children }: { children: ReactNode }) => {
               height={32}
               width={32}
               className={"h-8"}
-              src={"logo.svg"}
+              src={"/assets/logo.svg"}
               alt={"logo"}
             />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
@@ -162,10 +165,73 @@ const ClientLayout = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
       </nav>
-      <div className="max-w-screen-xl p-4 container mx-auto">
+    
+
+      <div className=" ">
         <BreadcrumbAutoFiltered />
       </div>
       <div className={"flex flex-col flex-grow overflow-auto "}>
+      {isLandingPage && (
+        <div className="relative pt-16 pb-32 flex content-center items-center justify-center z-10 min-h-[75vh]">
+          <video
+            className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src="assets/landing2.webm" type="video/webm" />
+            <source src="assets/landing2.webm" type="video/webm" />
+          </video>
+          <div className="absolute top-0 left-0 w-full h-full bg-black opacity-75"></div>
+
+          <div className="container relative mx-auto">
+            <div className="items-center flex flex-wrap">
+              <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
+                <div className="flex flex-col align-center p-10">
+                  <section className="text-center my-8">
+                    <h2 className="text-4xl font-bold text-white">
+                      Welcome to Sportsphere
+                    </h2>
+                    <p className="text-xl mt-4 text-gray-200">
+                      Track your game results, create spaces, manage teams and
+                      more.
+                    </p>
+                    <div className="mt-6 flex justify-center space-x-4">
+                      <ButtonLink link={PAGE_ROUTE.LOGIN} variant="filled">
+                        Get Started
+                      </ButtonLink>
+                      <ButtonLink
+                        link="#about"
+                        variant="outlined"
+                        className="bg-white hover:bg-gray-300"
+                      >
+                        Learn More
+                      </ButtonLink>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="top-auto left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-[70px] bottom-[-1px]">
+            <svg
+              className="absolute bottom-0 overflow-hidden w-full"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="none"
+              version="1.1"
+              viewBox="0 0 3840 100"
+              x="0"
+              y="0"
+            >
+              <polygon
+                className="text-gray-50 fill-current"
+                points="3840 0 3840 100 0 100"
+              ></polygon>
+            </svg>
+          </div>
+        </div>
+      )}
         <main className=" max-w-screen-xl px-4 flex-grow flex flex-col container mx-auto">
           {children}
         </main>

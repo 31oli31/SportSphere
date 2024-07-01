@@ -24,14 +24,12 @@ export default withAuth(
                     }
                 }
 
-                const allowdRoutes = [
-                    PAGE_ROUTE.HOME,
-                    PAGE_ROUTE.LOGIN,
-                    PAGE_ROUTE.REGISTER,
-                    PAGE_ROUTE.PERMISSION_DENIED,
+                const secureRoutes = [
+                    PAGE_ROUTE.SPACE,
+                    PAGE_ROUTE.DASHBOARD,
                 ];
 
-                if(!allowdRoutes.includes(path) && !path.startsWith(PAGE_ROUTE.API)){
+                if(secureRoutes.includes(path)){
                     // @ts-ignore
                     if (!token?.user) {
                         return false;

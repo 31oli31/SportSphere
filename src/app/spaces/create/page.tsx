@@ -47,7 +47,7 @@ const CreateSpacePage: React.FC = () => {
         if(!user?.id) return;
         try {
             const space =  await createSpace({ variables: { name: spaceName, adminId: user.id,privatePassword: privatePassword } });
-            router.push(`/space/${space.data?.createSpace.name}`); // Redirect to the newly created space using the Next.js
+            router.push('/dashboard'); // Redirect to the newly created space using the Next.js
         } catch (err) {
             console.error('Error creating space:', err);
         }

@@ -53,6 +53,7 @@
     "@graphql-codegen/typescript": "^4.0.7",
     "@graphql-codegen/typescript-react-apollo": "^4.3.0",
     "@graphql-codegen/typescript-resolvers": "^4.1.0",
+    "@svgr/webpack": "^8.1.0",
     "@types/bcryptjs": "2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
